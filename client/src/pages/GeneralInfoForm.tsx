@@ -16,6 +16,7 @@ interface GeneralInfoFormProps {
 export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
   const [, navigate] = useLocation();
   const [formData, setFormData] = useState({
+    engineerName: "",
     clientName: "",
     dataCenterName: "",
     location: "" as "الرياض" | "جدة" | "الخبر" | "أخرى في KSA" | "",
@@ -52,12 +53,13 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.clientName || !formData.dataCenterName || !formData.location) {
-      toast.error("يرجى ملء جميع الحقول المطلوبة");
+    if (!formData.engineerName || !formData.clientName || !formData.dataCenterName || !formData.location) {
+      toast.error("يرجى ملء جميع الحقول المطلوبة (بما في ذلك اسم مهندس المشروع)");
       return;
     }
 
     createQuestionnaire.mutate({
+      engineerName: formData.engineerName,
       clientName: formData.clientName,
       dataCenterName: formData.dataCenterName,
       location: formData.location,
@@ -90,6 +92,17 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
                 <h3 className="text-lg font-semibold">1. معلومات عامة</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="engineerName">اسم مهندس المشروع *</Label>
+                    <Input
+                      id="engineerName"
+                      value={formData.engineerName}
+                      onChange={(e) => handleInputChange("engineerName", e.target.value)}
+                      placeholder="اسم المهندس الكامل"
+                      required
+                    />
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="clientName">اسم العميل / الجهة *</Label>
                     <Input

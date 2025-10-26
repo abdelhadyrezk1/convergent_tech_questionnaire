@@ -32,6 +32,7 @@ export type InsertUser = typeof users.$inferInsert;
 export const questionnaires = mysqlTable("questionnaires", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull().references(() => users.id),
+  engineerName: varchar("engineerName", { length: 255 }).notNull(),
   clientName: varchar("clientName", { length: 255 }).notNull(),
   dataCenterName: varchar("dataCenterName", { length: 255 }).notNull(),
   location: mysqlEnum("location", ["الرياض", "جدة", "الخبر", "أخرى في KSA"]).notNull(),

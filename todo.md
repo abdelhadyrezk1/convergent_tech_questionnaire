@@ -126,3 +126,8 @@
 
 - [x] Implement PDF export functionality for Reports page with print-friendly layout
 
+
+- [ ] Add mandatory engineer name field to General Info form - block progress until filled
+- [ ] Implement automatic PDF email sending to arezk@ctechsa.com after questionnaire completion
+- [ ] Add PDF header with Convergent Technology logo and footer with Convergent Data Center logo
+

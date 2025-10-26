@@ -25,6 +25,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(
         z.object({
+          engineerName: z.string().min(1),
           clientName: z.string().min(1),
           dataCenterName: z.string().min(1),
           location: z.enum(["الرياض", "جدة", "الخبر", "أخرى في KSA"]),
@@ -46,6 +47,7 @@ export const appRouter = router({
           ctx.user.id,
           {
             userId: ctx.user.id,
+            engineerName: input.engineerName,
             clientName: input.clientName,
             dataCenterName: input.dataCenterName,
             location: input.location,
