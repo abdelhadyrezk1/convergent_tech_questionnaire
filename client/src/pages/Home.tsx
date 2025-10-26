@@ -111,7 +111,28 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              {/* Analytics & Reports */}
+              {/* Reports */}
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/reports")}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-orange-600" />
+                    التقارير
+                  </CardTitle>
+                  <CardDescription>
+                    عرض وإدارة التقارير
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 mb-4">
+                    اعرض جميع التقارير مع خيارات البحث والتصدير
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    عرض التقارير
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Analytics */}
               <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/analytics")}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">

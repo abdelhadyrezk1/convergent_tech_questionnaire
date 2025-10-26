@@ -11,6 +11,7 @@ import OpportunitiesForm from "./pages/OpportunitiesForm";
 import ReportPage from "./pages/ReportPage";
 import QuestionnairesListPage from "./pages/QuestionnairesListPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import ReportsPage from "./pages/ReportsPage";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
       <Route path={"/report/:id"} component={({ params }) => <ReportPage questionnaireId={parseInt(params.id)} />} />
       <Route path={"/questionnaires"} component={QuestionnairesListPage} />
       <Route path={"/analytics"} component={AnalyticsPage} />
+      <Route path={"/reports"} component={ReportsPage} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

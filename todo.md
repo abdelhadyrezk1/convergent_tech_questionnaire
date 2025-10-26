@@ -108,3 +108,6 @@
 
 - [x] Replace all occurrences of "Topology" label with "Topology" without translation in assets form
 
+
+- [x] Create dedicated Reports page with search, filter, and export options
+
