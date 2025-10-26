@@ -77,7 +77,7 @@ export default function Home() {
               {/* New Questionnaire Card */}
               <Card
                 className="cursor-pointer hover:shadow-xl transition border-l-4 border-red-700"
-                onClick={() => navigate("/general-info")}
+                onClick={() => navigate("/questionnaire/new")}
               >
                 <CardHeader>
                   <div className="flex items-center gap-3">

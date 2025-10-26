@@ -139,4 +139,5 @@
 - [ ] Update all reports to include contact person details (name, job title, phone, email)
 - [x] Add network communication protocol field to AssetsForm with options: SNMP, TCP/IP, Backnet over IP, Standalone
 - [x] Update all report outputs to include network protocol field in asset details
+- [x] Fix 404 error when clicking "ابدأ الآن" button on home page
 
