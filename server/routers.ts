@@ -109,7 +109,7 @@ export const appRouter = router({
           manufacturer: z.string().optional(),
           model: z.string().optional(),
           technology: z.string().optional(),
-          topology: z.enum(["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)", "أخرى"]).optional(),
+          topology: z.enum(["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)"]).optional(),
           manufacturingDate: z.string().optional(),
           startupDate: z.string().optional(),
           capacity: z.string().optional(),

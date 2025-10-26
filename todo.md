@@ -101,3 +101,7 @@
 - [x] Add quantity field to assets form
 - [x] Replace "غير محدد" with "أخرى" in topology enum to avoid zero/infinity values
 
+
+- [x] Remove "أخرى" value from topology enum
+- [x] Replace "الطوبولجيا" with "Topology" throughout the application
+

@@ -15,7 +15,7 @@ interface AssetsFormProps {
 }
 
 const PRODUCT_TYPES = ["UPS", "Precision Cooling", "Racks", "PDUs", "Busway", "Aisle Containments", "Surveillance", "Access Control", "Fire Alarm", "Fire Fighting", "Electrical (LV Panels)", "Diesel Generators"];
-const TOPOLOGIES = ["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)", "أخرى"];
+const TOPOLOGIES = ["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)"];
 const STATUSES = ["Active", "Standby", "Shutdown", "Malfunction", "Needs Maintenance", "EOL"];
 
 // Product-specific field configurations
