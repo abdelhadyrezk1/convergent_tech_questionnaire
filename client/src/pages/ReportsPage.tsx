@@ -1,4 +1,3 @@
-import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import { FileText, Download, Eye, Trash2, Search, Printer } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { exportReportsToPDF, printReports } from "@/lib/pdfExport";
+import { useState, useMemo } from "react";
 
 export default function ReportsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,10 +20,14 @@ export default function ReportsPage() {
   const handleExportPDF = async () => {
     try {
       setIsExporting(true);
-      exportReportsToPDF(`convergent_technology_reports_${new Date().toISOString().split('T')[0]}.pdf`);
-      toast.success("تم تصدير التقرير إلى PDF بنجاح");
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        exportReportsToPDF(`convergent_technology_reports_${new Date().toISOString().split('T')[0]}.pdf`);
+        toast.success("تم تصدير التقرير إلى PDF بنجاح");
+      }, 100);
     } catch (error) {
       toast.error("فشل تصدير التقرير");
+      console.error(error);
     } finally {
       setIsExporting(false);
     }
@@ -35,6 +39,7 @@ export default function ReportsPage() {
       toast.success("تم فتح نافذة الطباعة");
     } catch (error) {
       toast.error("فشل فتح نافذة الطباعة");
+      console.error(error);
     }
   };
 
@@ -249,323 +254,324 @@ export default function ReportsPage() {
           </CardContent>
         </Card>
 
-        {/* Reports Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>قائمة التقارير</CardTitle>
-            <CardDescription>
-              {isLoading ? "جاري التحميل..." : `إجمالي: ${filteredReports.length} تقرير`}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="text-center py-8 text-gray-500">جاري تحميل التقارير...</div>
-            ) : filteredReports.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">لا توجد تقارير تطابق معايير البحث</div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-right">رقم التقرير</TableHead>
-                      <TableHead className="text-right">اسم العميل</TableHead>
-                      <TableHead className="text-right">مركز البيانات</TableHead>
-                      <TableHead className="text-right">الموقع</TableHead>
-                      <TableHead className="text-right">تاريخ الزيارة</TableHead>
-                      <TableHead className="text-right">DCIM موجود</TableHead>
-                      <TableHead className="text-right">الحاجة إلى DCIM</TableHead>
-                      <TableHead className="text-right">الإجراءات</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredReports.map((report: any) => (
-                      <TableRow key={report.id} className="hover:bg-gray-50">
-                        <TableCell className="font-medium">#{report.id}</TableCell>
-                        <TableCell>{report.clientName}</TableCell>
-                        <TableCell>{report.dataCenterName}</TableCell>
-                        <TableCell>{report.location}</TableCell>
-                        <TableCell>{report.visitDate.toLocaleDateString("ar-SA")}</TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded text-xs font-semibold ${
-                              report.dcimHas === "نعم"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {report.dcimHas}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded text-xs font-semibold ${
-                              report.dcimNeeds === "نعم"
-                                ? "bg-orange-100 text-orange-800"
-                                : report.dcimNeeds === "لا"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {report.dcimNeeds}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => window.location.href = `/report/${report.id}`}
-                              className="gap-1"
-                            >
-                              <Eye className="w-4 h-4" />
-                              عرض
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={handleExportPDF}
-                              className="gap-1"
-                            >
-                              <Download className="w-4 h-4" />
-                              PDF
-                            </Button>
-                          </div>
-                        </TableCell>
+        {/* Reports Container for PDF Export */}
+        <div id="reports-container" className="space-y-6">
+          {/* Reports Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle>قائمة التقارير</CardTitle>
+              <CardDescription>
+                {isLoading ? "جاري التحميل..." : `إجمالي: ${filteredReports.length} تقرير`}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="text-center py-8 text-gray-500">جاري تحميل التقارير...</div>
+              ) : filteredReports.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">لا توجد تقارير تطابق معايير البحث</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-right">رقم التقرير</TableHead>
+                        <TableHead className="text-right">اسم العميل</TableHead>
+                        <TableHead className="text-right">مركز البيانات</TableHead>
+                        <TableHead className="text-right">الموقع</TableHead>
+                        <TableHead className="text-right">تاريخ الزيارة</TableHead>
+                        <TableHead className="text-right">DCIM موجود</TableHead>
+                        <TableHead className="text-right">الحاجة إلى DCIM</TableHead>
+                        <TableHead className="text-right">الإجراءات</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredReports.map((report: any) => (
+                        <TableRow key={report.id} className="hover:bg-gray-50">
+                          <TableCell className="font-medium">#{report.id}</TableCell>
+                          <TableCell>{report.clientName}</TableCell>
+                          <TableCell>{report.dataCenterName}</TableCell>
+                          <TableCell>{report.location}</TableCell>
+                          <TableCell>{report.visitDate.toLocaleDateString("ar-SA")}</TableCell>
+                          <TableCell>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-semibold ${
+                                report.dcimHas === "نعم"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
+                              {report.dcimHas}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-semibold ${
+                                report.dcimNeeds === "نعم"
+                                  ? "bg-orange-100 text-orange-800"
+                                  : report.dcimNeeds === "لا"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {report.dcimNeeds}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => window.location.href = `/report/${report.id}`}
+                                className="gap-1"
+                              >
+                                <Eye className="w-4 h-4" />
+                                عرض
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleExportPDF}
+                                className="gap-1"
+                              >
+                                <Download className="w-4 h-4" />
+                                PDF
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
-        {/* Charts Section */}
-        {filteredReports.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            {/* DCIM Status Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle>حالة DCIM</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
+          {/* Charts Section */}
+          {filteredReports.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* DCIM Status Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>حالة DCIM</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={[
+                          {
+                            name: "بها DCIM",
+                            value: filteredReports.filter((r: any) => r.dcimHas === "نعم").length,
+                          },
+                          {
+                            name: "بدون DCIM",
+                            value: filteredReports.filter((r: any) => r.dcimHas === "لا").length,
+                          },
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, value }) => `${name}: ${value}`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        <Cell fill="#10b981" />
+                        <Cell fill="#ef4444" />
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {/* DCIM Needs Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>الحاجة إلى DCIM</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
                       data={[
                         {
-                          name: "بها DCIM",
-                          value: filteredReports.filter((r: any) => r.dcimHas === "نعم").length,
+                          name: "نعم",
+                          value: filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length,
                         },
                         {
-                          name: "بدون DCIM",
-                          value: filteredReports.filter((r: any) => r.dcimHas === "لا").length,
+                          name: "لا",
+                          value: filteredReports.filter((r: any) => r.dcimNeeds === "لا").length,
+                        },
+                        {
+                          name: "غير متأكد",
+                          value: filteredReports.filter((r: any) => r.dcimNeeds === "غير متأكد").length,
                         },
                       ]}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
                     >
-                      <Cell fill="#10b981" />
-                      <Cell fill="#ef4444" />
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#f97316" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-            {/* DCIM Needs Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle>الحاجة إلى DCIM</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart
-                    data={[
-                      {
-                        name: "نعم",
-                        value: filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length,
-                      },
-                      {
-                        name: "لا",
-                        value: filteredReports.filter((r: any) => r.dcimNeeds === "لا").length,
-                      },
-                      {
-                        name: "غير متأكد",
-                        value: filteredReports.filter((r: any) => r.dcimNeeds === "غير متأكد").length,
-                      },
-                    ]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="value" fill="#f97316" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+              {/* Reports by Location */}
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <CardTitle>التقارير حسب الموقع</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                      data={Array.from(
+                        new Map(
+                          filteredReports.map((r: any) => [
+                            r.location,
+                            (filteredReports.filter((rep: any) => rep.location === r.location).length),
+                          ])
+                        ),
+                        ([location, count]) => ({ location, count })
+                      )}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="location" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-            {/* Reports by Location */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>التقارير حسب الموقع</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart
-                    data={Array.from(
-                      new Map(
-                        filteredReports.map((r: any) => [
-                          r.location,
-                          (filteredReports.filter((rep: any) => rep.location === r.location).length),
-                        ])
-                      ),
-                      ([location, count]) => ({ location, count })
-                    )}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="location" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#3b82f6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+              {/* Asset Status Distribution */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>توزيع الأصول حسب الحالة</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={[
+                          {
+                            name: "نشط",
+                            value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Active").length || 0), 0),
+                          },
+                          {
+                            name: "غير نشط",
+                            value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Inactive").length || 0), 0),
+                          },
+                          {
+                            name: "تحت الصيانة",
+                            value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Under Maintenance").length || 0), 0),
+                          },
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, value }) => `${name}: ${value}`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        <Cell fill="#10b981" />
+                        <Cell fill="#ef4444" />
+                        <Cell fill="#f59e0b" />
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-            {/* Asset Status Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle>توزيع الأصول حسب الحالة</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
+              {/* Assets by Product Type */}
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <CardTitle>عدد الأصول حسب نوع المنتج</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
                       data={[
-                        {
-                          name: "نشط",
-                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Active").length || 0), 0),
-                        },
-                        {
-                          name: "غير نشط",
-                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Inactive").length || 0), 0),
-                        },
-                        {
-                          name: "تحت الصيانة",
-                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Under Maintenance").length || 0), 0),
-                        },
+                        { name: "UPS", count: 0 },
+                        { name: "Cooling", count: 0 },
+                        { name: "Racks", count: 0 },
+                        { name: "PDUs", count: 0 },
+                        { name: "Busway", count: 0 },
+                        { name: "Aisle Containments", count: 0 },
+                        { name: "DCIM", count: 0 },
+                        { name: "Surveillance", count: 0 },
+                        { name: "Access Control", count: 0 },
+                        { name: "Fire Alarm", count: 0 },
+                        { name: "Fire Fighting", count: 0 },
+                        { name: "Electrical", count: 0 },
+                        { name: "Generators", count: 0 },
                       ]}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
                     >
-                      <Cell fill="#10b981" />
-                      <Cell fill="#ef4444" />
-                      <Cell fill="#f59e0b" />
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#8b5cf6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
-            {/* Assets by Product Type */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>عدد الأصول حسب نوع المنتج</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart
-                    data={[
-                      { name: "UPS", count: 0 },
-                      { name: "Cooling", count: 0 },
-                      { name: "Racks", count: 0 },
-                      { name: "PDUs", count: 0 },
-                      { name: "Busway", count: 0 },
-                      { name: "Aisle Containments", count: 0 },
-                      { name: "DCIM", count: 0 },
-                      { name: "Surveillance", count: 0 },
-                      { name: "Access Control", count: 0 },
-                      { name: "Fire Alarm", count: 0 },
-                      { name: "Fire Fighting", count: 0 },
-                      { name: "Electrical", count: 0 },
-                      { name: "Generators", count: 0 },
-                    ]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#8b5cf6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {/* Summary Stats */}
-        {filteredReports.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">
-                    {filteredReports.filter((r: any) => r.dcimHas === "نعم").length}
+          {/* Summary Stats */}
+          {filteredReports.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-blue-600">
+                      {filteredReports.filter((r: any) => r.dcimHas === "نعم").length}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">بها DCIM</p>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">بها DCIM</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-600">
-                    {filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-orange-600">
+                      {filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">تحتاج DCIM</p>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">تحتاج DCIM</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600">
-                    {filteredReports.filter((r: any) => r.dcimNeeds === "لا").length}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-green-600">
+                      {filteredReports.filter((r: any) => r.dcimNeeds === "لا").length}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">لا تحتاج DCIM</p>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">لا تحتاج DCIM</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-600">
-                    {filteredReports.filter((r: any) => r.dcimNeeds === "غير متأكد").length}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-yellow-600">
+                      {filteredReports.filter((r: any) => r.dcimNeeds === "غير متأكد").length}
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">غير متأكدة</p>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">غير متأكدة</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-
-            {/* Assets by Product Type - will be inserted before closing div */}

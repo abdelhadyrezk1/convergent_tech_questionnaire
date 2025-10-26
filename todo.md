@@ -153,3 +153,7 @@
 - [x] Add executive summary section at the beginning of the report
 
 
+
+- [x] Fix "Reports container not found" error when exporting PDF from ReportsPage
+
+
