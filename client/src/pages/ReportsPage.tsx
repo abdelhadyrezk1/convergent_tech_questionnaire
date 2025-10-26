@@ -7,13 +7,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
-import { FileText, Download, Eye, Trash2, Search } from "lucide-react";
+import { FileText, Download, Eye, Trash2, Search, Printer } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { exportReportsToPDF, printReports } from "@/lib/pdfExport";
 
 export default function ReportsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date");
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    try {
+      setIsExporting(true);
+      exportReportsToPDF(`convergent_technology_reports_${new Date().toISOString().split('T')[0]}.pdf`);
+      toast.success("تم تصدير التقرير إلى PDF بنجاح");
+    } catch (error) {
+      toast.error("فشل تصدير التقرير");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handlePrint = () => {
+    try {
+      printReports();
+      toast.success("تم فتح نافذة الطباعة");
+    } catch (error) {
+      toast.error("فشل فتح نافذة الطباعة");
+    }
+  };
 
   // Fetch all questionnaires (which contain reports)
   const { data: questionnaires = [], isLoading } = trpc.questionnaire.list.useQuery();
@@ -62,29 +85,36 @@ export default function ReportsPage() {
     return reports;
   }, [questionnaires, searchTerm, statusFilter, sortBy]);
 
-  const handleExportPDF = (reportId: number) => {
-    toast.success(`تم تصدير التقرير رقم ${reportId} إلى PDF`);
-    // TODO: Implement PDF export
-  };
-
-  const handleExportExcel = (reportId: number) => {
-    toast.success(`تم تصدير التقرير رقم ${reportId} إلى Excel`);
-    // TODO: Implement Excel export
-  };
-
-  const handleDelete = (reportId: number) => {
-    toast.success(`تم حذف التقرير رقم ${reportId}`);
-    // TODO: Implement delete functionality
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <FileText className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">التقارير</h1>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <FileText className="w-8 h-8 text-blue-600" />
+              <h1 className="text-4xl font-bold text-gray-900">التقارير</h1>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleExportPDF}
+                disabled={isExporting || filteredReports.length === 0}
+                className="gap-2"
+              >
+                <Download className="w-4 h-4" />
+                تصدير PDF
+              </Button>
+              <Button
+                onClick={handlePrint}
+                variant="outline"
+                disabled={filteredReports.length === 0}
+                className="gap-2"
+              >
+                <Printer className="w-4 h-4" />
+                طباعة
+              </Button>
+            </div>
           </div>
           <p className="text-gray-600">عرض وإدارة جميع تقارير تقييم مراكز البيانات</p>
         </div>
@@ -293,28 +323,11 @@ export default function ReportsPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => handleExportPDF(report.id)}
+                              onClick={handleExportPDF}
                               className="gap-1"
                             >
                               <Download className="w-4 h-4" />
                               PDF
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleExportExcel(report.id)}
-                              className="gap-1"
-                            >
-                              <Download className="w-4 h-4" />
-                              Excel
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleDelete(report.id)}
-                              className="gap-1"
-                            >
-                              <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
                         </TableCell>

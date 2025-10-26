@@ -123,3 +123,6 @@
 
 - [x] Add pie chart showing asset distribution by status (Active, Inactive, Under Maintenance) to Reports page
 
+
+- [x] Implement PDF export functionality for Reports page with print-friendly layout
+
