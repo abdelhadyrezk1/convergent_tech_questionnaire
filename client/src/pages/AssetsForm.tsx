@@ -127,7 +127,21 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
       toast.error("ملء الحقول المطلوبة");
       return;
     }
-    addAssetMutation.mutate({ questionnaireId, ...form } as any);
+    addAssetMutation.mutate({
+      questionnaireId,
+      productType: form.productType as any,
+      contractor: form.contractor || undefined,
+      manufacturer: form.manufacturer || undefined,
+      model: form.model || undefined,
+      technology: form.technology || undefined,
+      topology: (form.topology || undefined) as any,
+      manufacturingDate: form.manufacturingDate || undefined,
+      startupDate: form.startupDate || undefined,
+      capacity: form.capacity || undefined,
+      status: form.status as any,
+      maintenanceNotes: form.maintenanceNotes || undefined,
+      specificData: Object.keys(form.customFields).length > 0 ? form.customFields : undefined,
+    });
   };
 
   const handleProductTypeChange = (value: string) => {

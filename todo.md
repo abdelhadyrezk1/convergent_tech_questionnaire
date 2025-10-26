@@ -91,3 +91,6 @@
 ## Bug Fixes
 - [x] Fix AssetsForm: Product type selection doesn't change form fields dynamically (all products show UPS fields)
 
+
+- [x] Fix database insert error: Assets table expects different schema (unitCount, specificData fields mismatch)
+
