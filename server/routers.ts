@@ -3,7 +3,9 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
-import { createQuestionnaire, addAsset, addSalesOpportunity, getQuestionnaireWithDetails, getUserQuestionnaires, getAllQuestionnaires } from "./db";
+import { createQuestionnaire, addAsset, addSalesOpportunity, getQuestionnaireWithDetails, getUserQuestionnaires, getAllQuestionnaires, getDb } from "./db";
+import { questionnaires, dcimAssessments, assets, salesOpportunities } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
 
 export const appRouter = router({
   system: systemRouter,
@@ -174,8 +176,28 @@ export const appRouter = router({
         });
         return { id: opportunityId };
       }),
-  }),
-});
+    }),
+
+    report: router({
+      generate: publicProcedure
+        .input(z.object({ questionnaireId: z.number() }))
+        .query(async ({ input }) => {
+          const db = await getDb();
+          if (!db) throw new Error("Database not available");
+
+          const questionnaire = await db.select().from(questionnaires).where(eq(questionnaires.id, input.questionnaireId)).limit(1);
+          const dcim = await db.select().from(dcimAssessments).where(eq(dcimAssessments.questionnaireId, input.questionnaireId));
+          const assetsList = await db.select().from(assets).where(eq(assets.questionnaireId, input.questionnaireId));
+          const opportunities = await db.select().from(salesOpportunities).where(eq(salesOpportunities.questionnaireId, input.questionnaireId));
+
+          return {
+            questionnaire: questionnaire[0] || null,
+            dcim: dcim[0] || null,
+            assets: assetsList,
+            opportunities: opportunities,
+          };
+        }),
+    }),
+  });
 
 export type AppRouter = typeof appRouter;
-
