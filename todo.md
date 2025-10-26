@@ -117,3 +117,6 @@
 
 - [x] Add bar chart showing asset count by product type to Reports page
 
+
+- [x] Add top 3 follow-up recommendations section at top of Reports page
+

@@ -89,6 +89,74 @@ export default function ReportsPage() {
           <p className="text-gray-600">عرض وإدارة جميع تقارير تقييم مراكز البيانات</p>
         </div>
 
+        {/* Top 3 Follow-up Recommendations */}
+        {filteredReports.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {/* Recommendation 1: DCIM Implementation */}
+            <Card className="border-l-4 border-l-orange-500 bg-orange-50">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <span className="text-2xl font-bold text-orange-600">1</span>
+                  تنفيذ DCIM
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-700 mb-3">
+                  عدد العملاء الذين يحتاجون إلى DCIM:
+                </p>
+                <p className="text-2xl font-bold text-orange-600">
+                  {filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length}
+                </p>
+                <p className="text-xs text-gray-600 mt-2">
+                  فرصة بيع عالية الأولوية
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Recommendation 2: DCIM Upgrade */}
+            <Card className="border-l-4 border-l-blue-500 bg-blue-50">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <span className="text-2xl font-bold text-blue-600">2</span>
+                  ترقية DCIM
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-700 mb-3">
+                  عدد العملاء لديهم DCIM بالفعل:
+                </p>
+                <p className="text-2xl font-bold text-blue-600">
+                  {filteredReports.filter((r: any) => r.dcimHas === "نعم").length}
+                </p>
+                <p className="text-xs text-gray-600 mt-2">
+                  فرصة ترقية وتحسين الحل
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Recommendation 3: Infrastructure Assessment */}
+            <Card className="border-l-4 border-l-green-500 bg-green-50">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <span className="text-2xl font-bold text-green-600">3</span>
+                  تقييم البنية التحتية
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-700 mb-3">
+                  إجمالي الأصول المسجلة:
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  {filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.length || 0), 0)}
+                </p>
+                <p className="text-xs text-gray-600 mt-2">
+                  فرصة توسيع الحلول الإضافية
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Filters Card */}
         <Card className="mb-6">
           <CardHeader>
