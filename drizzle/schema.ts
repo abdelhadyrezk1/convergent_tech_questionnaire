@@ -98,7 +98,7 @@ export const assets = mysqlTable("assets", {
     "N+2",
     "2N",
     "Redundant (N+x)",
-    "غير محدد",
+    "أخرى",
   ]),
   manufacturingDate: varchar("manufacturingDate", { length: 10 }), // YYYY-MM-DD
   startupDate: varchar("startupDate", { length: 10 }), // YYYY-MM-DD

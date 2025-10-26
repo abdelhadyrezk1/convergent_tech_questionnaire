@@ -15,7 +15,7 @@ interface AssetsFormProps {
 }
 
 const PRODUCT_TYPES = ["UPS", "Precision Cooling", "Racks", "PDUs", "Busway", "Aisle Containments", "Surveillance", "Access Control", "Fire Alarm", "Fire Fighting", "Electrical (LV Panels)", "Diesel Generators"];
-const TOPOLOGIES = ["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)", "غير محدد"];
+const TOPOLOGIES = ["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)", "أخرى"];
 const STATUSES = ["Active", "Standby", "Shutdown", "Malfunction", "Needs Maintenance", "EOL"];
 
 // Product-specific field configurations
@@ -95,6 +95,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
     manufacturingDate: "",
     startupDate: "",
     capacity: "",
+    quantity: "",
     status: "",
     maintenanceNotes: "",
     customFields: {} as Record<string, string>,
@@ -114,6 +115,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
         manufacturingDate: "",
         startupDate: "",
         capacity: "",
+        quantity: "",
         status: "",
         maintenanceNotes: "",
         customFields: {},
@@ -138,6 +140,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
       manufacturingDate: form.manufacturingDate || undefined,
       startupDate: form.startupDate || undefined,
       capacity: form.capacity || undefined,
+      unitCount: form.quantity ? parseInt(form.quantity) : undefined,
       status: form.status as any,
       maintenanceNotes: form.maintenanceNotes || undefined,
       specificData: Object.keys(form.customFields).length > 0 ? form.customFields : undefined,
@@ -263,6 +266,16 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div>
+                    <Label>الكمية</Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={form.quantity}
+                      onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                      placeholder="1"
+                    />
                   </div>
                 </div>
 

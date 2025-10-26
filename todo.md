@@ -97,3 +97,7 @@
 
 - [x] Fix database insert error: technology field sends 'default' instead of NULL/empty string
 
+
+- [x] Add quantity field to assets form
+- [x] Replace "غير محدد" with "أخرى" in topology enum to avoid zero/infinity values
+
