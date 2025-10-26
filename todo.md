@@ -105,3 +105,6 @@
 - [x] Remove "أخرى" value from topology enum
 - [x] Replace "الطوبولجيا" with "Topology" throughout the application
 
+
+- [x] Replace all occurrences of "Topology" label with "Topology" without translation in assets form
+

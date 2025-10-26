@@ -222,7 +222,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
                     />
                   </div>
                   <div>
-                    <Label>الطوبولوجيا</Label>
+                    <Label>Topology</Label>
                     <Select value={form.topology} onValueChange={(v) => setForm({ ...form, topology: v })}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر" />
