@@ -140,4 +140,6 @@
 - [x] Add network communication protocol field to AssetsForm with options: SNMP, TCP/IP, Backnet over IP, Standalone
 - [x] Update all report outputs to include network protocol field in asset details
 - [x] Fix 404 error when clicking "ابدأ الآن" button on home page
+- [x] Replace "Other" with "Civil Works" in OpportunitiesForm
+- [x] Add sensors field to AssetsForm with options: No sensors, Temperature & Humidity, Temperature only, Refer to description
 

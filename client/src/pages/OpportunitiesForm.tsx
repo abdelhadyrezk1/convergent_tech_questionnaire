@@ -10,7 +10,7 @@ import { trpc } from "@/lib/trpc";
 import { Plus, Download } from "lucide-react";
 import { useLocation } from "wouter";
 
-const OPPORTUNITY_TYPES = ["Spare Parts Offer", "Maintenance Contract", "UPS Upgrade", "Cooling Modernization", "EcoStruxure IT (DCIM)", "Racks/Containment Expansion", "Electrical System Upgrade", "Fire/Security System Upgrade", "Other"];
+const OPPORTUNITY_TYPES = ["Spare Parts Offer", "Maintenance Contract", "UPS Upgrade", "Cooling Modernization", "EcoStruxure IT (DCIM)", "Racks/Containment Expansion", "Electrical System Upgrade", "Fire/Security System Upgrade", "Civil Works"];
 const PRIORITIES = ["High", "Medium", "Low"];
 
 export default function OpportunitiesForm({ questionnaireId }: { questionnaireId: number }) {

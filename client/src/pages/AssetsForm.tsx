@@ -94,6 +94,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
     technology: "",
     topology: "",
     networkProtocol: "",
+    sensors: "",
     manufacturingDate: "",
     startupDate: "",
     capacity: "",
@@ -115,6 +116,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
         technology: "",
         topology: "",
         networkProtocol: "",
+        sensors: "",
         manufacturingDate: "",
         startupDate: "",
         capacity: "",
@@ -145,6 +147,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
       capacity: form.capacity || undefined,
       unitCount: form.quantity ? parseInt(form.quantity) : undefined,
       status: form.status as any,
+      sensors: (form.sensors || undefined) as any,
       maintenanceNotes: form.maintenanceNotes || undefined,
       specificData: { ...form.customFields, networkProtocol: form.networkProtocol },
     });
@@ -294,6 +297,20 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
                       onChange={(e) => setForm({ ...form, quantity: e.target.value })}
                       placeholder="1"
                     />
+                  </div>
+                  <div>
+                    <Label>الحساسات</Label>
+                    <Select value={form.sensors} onValueChange={(v) => setForm({ ...form, sensors: v })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="اختر" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="No sensors">No sensors</SelectItem>
+                        <SelectItem value="Temperature & Humidity">Temperature & Humidity</SelectItem>
+                        <SelectItem value="Temperature only">Temperature only</SelectItem>
+                        <SelectItem value="Refer to description">Refer to description</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 

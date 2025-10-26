@@ -1,0 +1,1 @@
+ALTER TABLE `assets` ADD `sensors` enum('No sensors','Temperature & Humidity','Temperature only','Refer to description');

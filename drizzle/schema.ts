@@ -113,6 +113,12 @@ export const assets = mysqlTable("assets", {
     "Needs Maintenance",
     "EOL",
   ]).notNull(),
+  sensors: mysqlEnum("sensors", [
+    "No sensors",
+    "Temperature & Humidity",
+    "Temperature only",
+    "Refer to description",
+  ]),
   specificData: text("specificData"), // JSON for product-specific fields
   maintenanceNotes: text("maintenanceNotes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -139,7 +145,7 @@ export const salesOpportunities = mysqlTable("salesOpportunities", {
     "Racks/Containment Expansion",
     "Electrical System Upgrade",
     "Fire/Security System Upgrade",
-    "Other",
+    "Civil Works",
   ]).notNull(),
   description: text("description"),
   priority: mysqlEnum("priority", ["High", "Medium", "Low"]).default("Medium"),

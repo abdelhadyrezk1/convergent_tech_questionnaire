@@ -119,6 +119,7 @@ export const appRouter = router({
           capacity: z.string().optional(),
           unitCount: z.number().optional(),
           status: z.enum(["Active", "Standby", "Shutdown", "Malfunction", "Needs Maintenance", "EOL"]),
+          sensors: z.enum(["No sensors", "Temperature & Humidity", "Temperature only", "Refer to description"]).optional(),
           maintenanceNotes: z.string().optional(),
           specificData: z.record(z.string(), z.any()).optional(),
         })
@@ -137,6 +138,7 @@ export const appRouter = router({
           capacity: input.capacity,
           unitCount: input.unitCount,
           status: input.status,
+          sensors: input.sensors,
           specificData: input.specificData ? JSON.stringify(input.specificData) : null,
           maintenanceNotes: input.maintenanceNotes,
         });
@@ -159,7 +161,7 @@ export const appRouter = router({
             "Racks/Containment Expansion",
             "Electrical System Upgrade",
             "Fire/Security System Upgrade",
-            "Other",
+            "Civil Works",
           ]),
           description: z.string().optional(),
           priority: z.enum(["High", "Medium", "Low"]).optional(),
