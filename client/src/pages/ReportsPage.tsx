@@ -427,6 +427,47 @@ export default function ReportsPage() {
               </CardContent>
             </Card>
 
+            {/* Asset Status Distribution */}
+            <Card>
+              <CardHeader>
+                <CardTitle>توزيع الأصول حسب الحالة</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={[
+                        {
+                          name: "نشط",
+                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Active").length || 0), 0),
+                        },
+                        {
+                          name: "غير نشط",
+                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Inactive").length || 0), 0),
+                        },
+                        {
+                          name: "تحت الصيانة",
+                          value: filteredReports.reduce((sum: number, r: any) => sum + (r.assets?.filter((a: any) => a.status === "Under Maintenance").length || 0), 0),
+                        },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, value }) => `${name}: ${value}`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      <Cell fill="#10b981" />
+                      <Cell fill="#ef4444" />
+                      <Cell fill="#f59e0b" />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
             {/* Assets by Product Type */}
             <Card className="lg:col-span-2">
               <CardHeader>

@@ -120,3 +120,6 @@
 
 - [x] Add top 3 follow-up recommendations section at top of Reports page
 
+
+- [x] Add pie chart showing asset distribution by status (Active, Inactive, Under Maintenance) to Reports page
+
