@@ -22,6 +22,7 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
     location: "" as "الرياض" | "جدة" | "الخبر" | "أخرى في KSA" | "",
     address: "",
     contactName: "",
+    contactJobTitle: "",
     contactPhone: "",
     contactEmail: "",
     dataCenterStartDate: "",
@@ -53,8 +54,8 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.engineerName || !formData.clientName || !formData.dataCenterName || !formData.location) {
-      toast.error("يرجى ملء جميع الحقول المطلوبة (بما في ذلك اسم مهندس المشروع)");
+    if (!formData.engineerName || !formData.clientName || !formData.dataCenterName || !formData.location || !formData.contactName || !formData.contactJobTitle || !formData.contactPhone || !formData.contactEmail) {
+      toast.error("يرجى ملء جميع الحقول المطلوبة (بما في ذلك بيانات مسئول الاتصال)");
       return;
     }
 
@@ -65,6 +66,7 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
       location: formData.location,
       address: formData.address,
       contactName: formData.contactName,
+      contactJobTitle: formData.contactJobTitle,
       contactPhone: formData.contactPhone,
       contactEmail: formData.contactEmail,
       dataCenterStartDate: formData.dataCenterStartDate ? parseInt(formData.dataCenterStartDate) : undefined,
@@ -151,28 +153,41 @@ export default function GeneralInfoForm({ onSuccess }: GeneralInfoFormProps) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="contactName">اسم جهة الاتصال</Label>
+                    <Label htmlFor="contactName">مسئول الاتصال *</Label>
                     <Input
                       id="contactName"
                       value={formData.contactName}
                       onChange={(e) => handleInputChange("contactName", e.target.value)}
-                      placeholder="اسم الشخص المسؤول"
+                      placeholder="اسم مسئول الاتصال"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="contactPhone">رقم الهاتف</Label>
+                    <Label htmlFor="contactJobTitle">وظيفته *</Label>
+                    <Input
+                      id="contactJobTitle"
+                      value={formData.contactJobTitle}
+                      onChange={(e) => handleInputChange("contactJobTitle", e.target.value)}
+                      placeholder="مثال: مدير العمليات"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contactPhone">رقم التليفون *</Label>
                     <Input
                       id="contactPhone"
                       type="tel"
                       value={formData.contactPhone}
                       onChange={(e) => handleInputChange("contactPhone", e.target.value)}
-                      placeholder="+966 5X XXX XXXX"
+                      placeholder="+966 50 1234567"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="contactEmail">البريد الإلكتروني</Label>
+                    <Label htmlFor="contactEmail">البريد الإلكتروني *</Label>
                     <Input
                       id="contactEmail"
                       type="email"

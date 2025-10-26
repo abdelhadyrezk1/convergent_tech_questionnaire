@@ -38,6 +38,7 @@ export const questionnaires = mysqlTable("questionnaires", {
   location: mysqlEnum("location", ["الرياض", "جدة", "الخبر", "أخرى في KSA"]).notNull(),
   address: text("address"),
   contactName: varchar("contactName", { length: 255 }),
+  contactJobTitle: varchar("contactJobTitle", { length: 255 }),
   contactPhone: varchar("contactPhone", { length: 20 }),
   contactEmail: varchar("contactEmail", { length: 320 }),
   dataCenterStartDate: int("dataCenterStartDate"), // Year (e.g., 2012)

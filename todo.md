@@ -131,3 +131,6 @@
 - [ ] Implement automatic PDF email sending to arezk@ctechsa.com after questionnaire completion
 - [ ] Add PDF header with Convergent Technology logo and footer with Convergent Data Center logo
 
+
+- [x] Add contact person fields to General Info form: name, job title, phone, email (after client name field)
+
