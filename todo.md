@@ -86,3 +86,8 @@
 ## Known Issues & Improvements
 - [ ] (To be filled as issues are discovered)
 
+
+
+## Bug Fixes
+- [x] Fix AssetsForm: Product type selection doesn't change form fields dynamically (all products show UPS fields)
+
