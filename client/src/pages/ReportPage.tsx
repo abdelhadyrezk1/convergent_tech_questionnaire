@@ -97,6 +97,7 @@ export default function ReportPage({ questionnaireId }: { questionnaireId: numbe
                           <th className="p-2 text-left">النوع</th>
                           <th className="p-2 text-left">المصنع</th>
                           <th className="p-2 text-left">الموديل</th>
+                          <th className="p-2 text-left">بروتوكول الشبكة</th>
                           <th className="p-2 text-left">الحالة</th>
                         </tr>
                       </thead>
@@ -106,6 +107,7 @@ export default function ReportPage({ questionnaireId }: { questionnaireId: numbe
                             <td className="p-2">{asset.productType}</td>
                             <td className="p-2">{asset.manufacturer}</td>
                             <td className="p-2">{asset.model}</td>
+                            <td className="p-2">{asset.specificData?.networkProtocol || asset.specificData?.['بروتوكول الاتصال بالشبكة'] || '-'}</td>
                             <td className="p-2"><span className={`px-2 py-1 rounded text-xs font-semibold ${asset.status === "Active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>{asset.status}</span></td>
                           </tr>
                         ))}
