@@ -94,3 +94,6 @@
 
 - [x] Fix database insert error: Assets table expects different schema (unitCount, specificData fields mismatch)
 
+
+- [x] Fix database insert error: technology field sends 'default' instead of NULL/empty string
+

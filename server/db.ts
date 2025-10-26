@@ -158,7 +158,15 @@ export async function addAsset(data: InsertAsset) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  const result = await db.insert(assets).values(data);
+  // Clean up undefined values to null
+  const cleanedData = Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [
+      key,
+      value === undefined ? null : value,
+    ])
+  ) as InsertAsset;
+
+  const result = await db.insert(assets).values(cleanedData);
   return result[0].insertId as number;
 }
 
