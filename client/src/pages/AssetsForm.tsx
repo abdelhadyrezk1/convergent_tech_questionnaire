@@ -17,6 +17,7 @@ interface AssetsFormProps {
 const PRODUCT_TYPES = ["UPS", "Precision Cooling", "Racks", "PDUs", "Busway", "Aisle Containments", "Surveillance", "Access Control", "Fire Alarm", "Fire Fighting", "Electrical (LV Panels)", "Diesel Generators"];
 const TOPOLOGIES = ["Standalone", "N+1", "N+2", "2N", "Redundant (N+x)"];
 const STATUSES = ["Active", "Standby", "Shutdown", "Malfunction", "Needs Maintenance", "EOL"];
+const NETWORK_PROTOCOLS = ["SNMP", "TCP/IP", "Backnet over IP", "Standalone"];
 
 // Product-specific field configurations
 const PRODUCT_FIELDS: Record<string, { label: string; placeholder: string }[]> = {
@@ -92,6 +93,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
     model: "",
     technology: "",
     topology: "",
+    networkProtocol: "",
     manufacturingDate: "",
     startupDate: "",
     capacity: "",
@@ -112,6 +114,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
         model: "",
         technology: "",
         topology: "",
+        networkProtocol: "",
         manufacturingDate: "",
         startupDate: "",
         capacity: "",
@@ -125,7 +128,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
   });
 
   const handleAdd = () => {
-    if (!form.productType || !form.status) {
+    if (!form.productType || !form.status || !form.networkProtocol) {
       toast.error("ملء الحقول المطلوبة");
       return;
     }
@@ -143,7 +146,7 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
       unitCount: form.quantity ? parseInt(form.quantity) : undefined,
       status: form.status as any,
       maintenanceNotes: form.maintenanceNotes || undefined,
-      specificData: Object.keys(form.customFields).length > 0 ? form.customFields : undefined,
+      specificData: { ...form.customFields, networkProtocol: form.networkProtocol },
     });
   };
 
@@ -262,6 +265,21 @@ export default function AssetsForm({ questionnaireId }: AssetsFormProps) {
                         {STATUSES.map((s) => (
                           <SelectItem key={s} value={s}>
                             {s}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>بروتوكول الاتصال بالشبكة *</Label>
+                    <Select value={form.networkProtocol} onValueChange={(v) => setForm({ ...form, networkProtocol: v })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="اختر" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {NETWORK_PROTOCOLS.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            {p}
                           </SelectItem>
                         ))}
                       </SelectContent>
