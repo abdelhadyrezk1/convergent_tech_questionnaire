@@ -111,3 +111,6 @@
 
 - [x] Create dedicated Reports page with search, filter, and export options
 
+
+- [x] Add interactive charts to Reports page (Recharts)
+

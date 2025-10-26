@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { FileText, Download, Eye, Trash2, Search } from "lucide-react";
+import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export default function ReportsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -257,6 +258,108 @@ export default function ReportsPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Charts Section */}
+        {filteredReports.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* DCIM Status Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>حالة DCIM</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={[
+                        {
+                          name: "بها DCIM",
+                          value: filteredReports.filter((r: any) => r.dcimHas === "نعم").length,
+                        },
+                        {
+                          name: "بدون DCIM",
+                          value: filteredReports.filter((r: any) => r.dcimHas === "لا").length,
+                        },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, value }) => `${name}: ${value}`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      <Cell fill="#10b981" />
+                      <Cell fill="#ef4444" />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* DCIM Needs Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>الحاجة إلى DCIM</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={[
+                      {
+                        name: "نعم",
+                        value: filteredReports.filter((r: any) => r.dcimNeeds === "نعم").length,
+                      },
+                      {
+                        name: "لا",
+                        value: filteredReports.filter((r: any) => r.dcimNeeds === "لا").length,
+                      },
+                      {
+                        name: "غير متأكد",
+                        value: filteredReports.filter((r: any) => r.dcimNeeds === "غير متأكد").length,
+                      },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#f97316" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Reports by Location */}
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>التقارير حسب الموقع</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={Array.from(
+                      new Map(
+                        filteredReports.map((r: any) => [
+                          r.location,
+                          (filteredReports.filter((rep: any) => rep.location === r.location).length),
+                        ])
+                      ),
+                      ([location, count]) => ({ location, count })
+                    )}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="location" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#3b82f6" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Summary Stats */}
         {filteredReports.length > 0 && (
