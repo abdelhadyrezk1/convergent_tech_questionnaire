@@ -143,3 +143,9 @@
 - [x] Replace "Other" with "Civil Works" in OpportunitiesForm
 - [x] Add sensors field to AssetsForm with options: No sensors, Temperature & Humidity, Temperature only, Refer to description
 
+
+- [x] Remove "Other", "None", "لايوجد" options from all forms to prevent database errors (no such options found in current forms)
+- [x] Enhance report output with rich graphics and Convergent Technology Logo
+- [x] Add professional tabular forms with borders to report output
+
+
