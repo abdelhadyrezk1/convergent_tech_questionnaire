@@ -358,6 +358,40 @@ export default function ReportsPage() {
                 </ResponsiveContainer>
               </CardContent>
             </Card>
+
+            {/* Assets by Product Type */}
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>عدد الأصول حسب نوع المنتج</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={[
+                      { name: "UPS", count: 0 },
+                      { name: "Cooling", count: 0 },
+                      { name: "Racks", count: 0 },
+                      { name: "PDUs", count: 0 },
+                      { name: "Busway", count: 0 },
+                      { name: "Aisle Containments", count: 0 },
+                      { name: "DCIM", count: 0 },
+                      { name: "Surveillance", count: 0 },
+                      { name: "Access Control", count: 0 },
+                      { name: "Fire Alarm", count: 0 },
+                      { name: "Fire Fighting", count: 0 },
+                      { name: "Electrical", count: 0 },
+                      { name: "Generators", count: 0 },
+                    ]}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#8b5cf6" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </div>
         )}
 
@@ -411,3 +445,5 @@ export default function ReportsPage() {
   );
 }
 
+
+            {/* Assets by Product Type - will be inserted before closing div */}

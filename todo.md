@@ -114,3 +114,6 @@
 
 - [x] Add interactive charts to Reports page (Recharts)
 
+
+- [x] Add bar chart showing asset count by product type to Reports page
+
