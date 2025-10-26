@@ -111,6 +111,54 @@ export default function ReportPage({ questionnaireId }: { questionnaireId: numbe
               </div>
 
               <div className="p-8">
+                {/* Executive Summary Section */}
+                <div className="mb-8 bg-gradient-to-r from-yellow-50 to-orange-50 p-6 border-2 border-orange-400 rounded-lg">
+                  <h2 className="text-2xl font-bold text-red-700 border-b-2 border-orange-400 pb-3 mb-4">الملخص التنفيذي | Executive Summary</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div className="bg-white p-4 rounded border-l-4 border-green-600">
+                      <p className="text-gray-600 text-sm font-bold">إجمالي الأصول</p>
+                      <p className="text-3xl font-bold text-green-600 mt-2">{reportData?.assets?.length || 0}</p>
+                    </div>
+                    <div className="bg-white p-4 rounded border-l-4 border-blue-600">
+                      <p className="text-gray-600 text-sm font-bold">الفرص البيعية</p>
+                      <p className="text-3xl font-bold text-blue-600 mt-2">{reportData?.opportunities?.length || 0}</p>
+                    </div>
+                    <div className="bg-white p-4 rounded border-l-4 border-purple-600">
+                      <p className="text-gray-600 text-sm font-bold">القيمة المتوقعة (SAR)</p>
+                      <p className="text-3xl font-bold text-purple-600 mt-2">{(reportData?.opportunities?.reduce((sum: number, opp: any) => sum + (opp.estimatedValue || 0), 0) || 0).toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded">
+                    <p className="text-gray-700 font-semibold mb-2">ملخص التقييم:</p>
+                    <ul className="text-gray-700 space-y-2 text-sm">
+                      <li className="flex items-start">
+                        <span className="text-green-600 font-bold mr-3">✓</span>
+                        <span>
+                          <strong>حالة DCIM:</strong> {reportData?.dcim?.hasDCIM === "نعم" ? "العميل يمتلك نظام DCIM" : "العميل لا يمتلك نظام DCIM"}
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-600 font-bold mr-3">→</span>
+                        <span>
+                          <strong>احتياج DCIM:</strong> {reportData?.dcim?.needsDCIM === "نعم" ? "العميل يحتاج إلى نظام DCIM" : reportData?.dcim?.needsDCIM === "لا" ? "العميل لا يحتاج إلى نظام DCIM" : "العميل غير متأكد من احتياجه إلى نظام DCIM"}
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-orange-600 font-bold mr-3">◆</span>
+                        <span>
+                          <strong>الأصول المقيمة:</strong> تم تقييم {reportData?.assets?.length || 0} أصل من أنواع مختلفة (UPS، Cooling، Racks، إلخ)
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-red-600 font-bold mr-3">★</span>
+                        <span>
+                          <strong>الفرص المحددة:</strong> تم تحديد {reportData?.opportunities?.length || 0} فرصة بيعية بقيمة متوقعة {(reportData?.opportunities?.reduce((sum: number, opp: any) => sum + (opp.estimatedValue || 0), 0) || 0).toLocaleString()} SAR
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
                 {/* Client Information Section */}
                 {reportData?.questionnaire && (
                   <div className="mb-8">

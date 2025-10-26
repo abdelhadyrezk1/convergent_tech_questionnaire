@@ -149,3 +149,7 @@
 - [x] Add professional tabular forms with borders to report output
 
 
+
+- [x] Add executive summary section at the beginning of the report
+
+
