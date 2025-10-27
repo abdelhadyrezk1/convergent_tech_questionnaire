@@ -1,0 +1,56 @@
+[build]
+  command = "pnpm build"
+  functions = "netlify/functions"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.13.0"
+  PNPM_VERSION = "9.0.0"
+
+[context.production.environment]
+  DATABASE_URL = ""
+  JWT_SECRET = ""
+  OAUTH_SERVER_URL = ""
+  BUILT_IN_FORGE_API_KEY = ""
+  BUILT_IN_FORGE_API_URL = ""
+  VITE_APP_TITLE = "Convergent Technology"
+  VITE_APP_LOGO = ""
+  VITE_ANALYTICS_ENDPOINT = ""
+  VITE_ANALYTICS_WEBSITE_ID = ""
+  VITE_APP_ID = ""
+  VITE_OAUTH_PORTAL_URL = ""
+  OWNER_NAME = ""
+  OWNER_OPEN_ID = ""
+
+[context.deploy-preview.environment]
+  DATABASE_URL = ""
+  JWT_SECRET = ""
+  OAUTH_SERVER_URL = ""
+  BUILT_IN_FORGE_API_KEY = ""
+  BUILT_IN_FORGE_API_URL = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
