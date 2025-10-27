@@ -176,6 +176,6 @@
 
 
 
-- [ ] Push project to GitHub repository
+- [x] Push project to GitHub repository (https://github.com/abdelhadyrezk1/convergent_tech_questionnaire)
 
 
