@@ -171,3 +171,7 @@
 - [x] Prepare deployment files for Render
 
 
+
+- [x] Create step-by-step visual guide for deploying to Vercel/Netlify without technical commands
+
+
