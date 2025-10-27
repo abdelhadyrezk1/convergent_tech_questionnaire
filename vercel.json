@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "framework": "vite",
@@ -18,7 +17,6 @@
     "OWNER_NAME": "@owner_name",
     "OWNER_OPEN_ID": "@owner_open_id"
   },
-  "buildOutputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",
