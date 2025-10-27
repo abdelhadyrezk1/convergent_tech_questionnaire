@@ -175,3 +175,7 @@
 - [x] Create step-by-step visual guide for deploying to Vercel/Netlify without technical commands
 
 
+
+- [ ] Push project to GitHub repository
+
+
